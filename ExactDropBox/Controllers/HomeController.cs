@@ -36,7 +36,7 @@ namespace ExactDropBox.Controllers
         [HttpPost]
         public async Task<ActionResult> UploadFile(HttpPostedFileBase file)
         {
-            if (file.ContentLength > 0)
+            if (file != null && file.ContentLength > 0)
             {
                 var fileName = Path.GetFileName(file.FileName);
                 string content = new StreamReader(file.InputStream).ReadToEnd();
