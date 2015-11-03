@@ -1,0 +1,81 @@
+﻿@model ExactDropBox.Models.IndexViewModel
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="row">
+    @if (Model.ExactIsAuthenticated && Model.DropboxIsAuthenticated)
+    {
+        <div class="row">
+            <div class="col-md-4">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Upload File</h3>
+                    </div>
+                    <div class="panel-body">
+                        @using (Html.BeginForm("UploadFile", "Home", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+                        {
+                            <label for="file">Select Filename:</label>
+                            <div class="input-group">
+                                <span class="input-group-btn">
+                                    <span class="btn btn-primary btn-file">
+                                        Browse… <input type="file" multiple="" name="file" id="upload-file">
+                                    </span>
+                                </span>
+                                <input type="text" class="form-control" readonly="" id="file-name">
+                            </div>
+                            <div class="input-group" style="padding-top:5px;">
+                                <input type="submit" class="btn btn-primary btn-sm" />
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Uploaded File/s</h3>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>File Name</th>
+                                    <th>DropBox Rev ID</th>
+                                    <th>Exact Doc ID</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.FileList)
+                                {
+                                    <tr>
+                                        <th>@item.FileName</th>
+                                        <th>@item.DropBoxRev</th>
+                                        <th>@item.ExactDocID</th>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+
+    }
+</div>
+@section Scripts
+{
+    <script>
+        $(function () {
+            $("input:file").change(function () {
+                var fullPath = $(this).val();
+                var fileName = fullPath.replace(/^.*[\\\/]/, '');
+                $("#file-name").val(fileName);
+            });
+
+        });
+    </script>
+}
